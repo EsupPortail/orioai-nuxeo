@@ -1,0 +1,235 @@
+<?xml version="1.0"?>
+<project name="esupecm-orioai" default="deploy" basedir="."  xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+  <!-- From the pom.xml -->
+  <property name="name" value="esupecm-orioai" />
+
+  <!-- Create a build.properties file from build.properties.sample
+       if you wish to override the JBoss paths -->
+  <property file="build.properties" />
+  <property file="init-build.properties" />
+	
+  <property name="utils.dir" value="${basedir}/../../utils" />
+
+  <property name="jboss.dir" value="/opt/jboss" />
+
+  <property name="javac.debug" value="true" />
+  <property name="javac.deprecation" value="false" />
+
+
+  <!-- Boilerplate configuration -->
+
+  <property name="build.dir" value="${basedir}/build/ori-oai-nuxeo/target" />
+  <property name="deploy.dir.jboss" value="${jboss.dir}/server/default/deploy/nuxeo.ear/plugins" />
+  
+	<property name="deploy.dir.tomcat" value="${tomcat.dir}/templates/custom/plugins" />
+	<property name="deployed.dir.tomcat" value="${tomcat.dir}/nxserver/plugins" />
+	<property name="deploy.lib.tomcat" value="${tomcat.dir}/templates/custom/lib" />
+	
+	<!-- ==================== maven properties =================================== -->
+	<property name="maven.version" value="2.2.1" />
+	<property name="maven.dir" value="${utils.dir}/apache-maven-${maven.version}" />
+	<path id="maven-ant-tasks.classpath" path="${utils.dir}/lib/maven-ant-tasks-2.1.3.jar" />
+	<typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+	         uri="antlib:org.apache.maven.artifact.ant"
+	         classpathref="maven-ant-tasks.classpath" />
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- ==================== Target :: Remplacement des paramètres depuis le fichier central =================================== -->
+	
+	<property name="commons.parameters.local.file" value="commons-parameters.properties" />
+	
+	
+	<!-- Télécharge le fichier de propriétés -->
+	<target name="download-commons.parameters.local.file" if="commons.parameters.central.file.url">
+		<echo message="je copie en local ${commons.parameters.central.file.url} ..."/>
+		<get dest="${commons.parameters.local.file}" src="${commons.parameters.central.file.url}"/>
+	</target>
+	
+	
+	<!-- Teste si le fichier de propriétés local existe -->
+	<target name="test-available-commons.parameters.local.file">
+		<available file="${commons.parameters.local.file}" property="commons.parameters.local.file.exists"/>
+		<echo message="${commons.parameters.local.file} existe ? ${commons.parameters.local.file.exists}"/>
+	</target>
+	
+	
+	<!-- Copie build.example.properties en build.properties -->
+	<target name="init-build.properties" depends="download-commons.parameters.local.file,test-available-commons.parameters.local.file" if="commons.parameters.local.file.exists">
+		<echo message="initialise le fichier build.properties"/>
+		
+		<echo message="${commons.parameters.local.file}"/>
+		
+		<delete file="build.properties" />
+		
+		<copy file="init-build.properties" tofile="build.properties">
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.ReplaceTokens"/>
+			</filterchain>
+			<filterset
+				begintoken="["
+				endtoken="]"
+				filtersfile="${commons.parameters.local.file}"/>
+		</copy>
+		
+		<echo message="remplacement des paramètres effectué dans build.properties !"/>
+
+	</target>
+		
+	
+	
+	<!-- Replace the values -->
+	<target name="init-build" depends="init-build.properties" description="Initialise le fichier build.properties avec le remplacement des variables">
+		<if>
+			<equals arg1="${from.quick.install}" arg2="true" />
+			<then>
+				<echo message="on change la valeur de commons.parameters.central.file.url dans init-build.properties ..." />
+				<replace
+					file="init-build.properties"
+					dir="."
+					value="${commons.parameters.central.file.url}">
+					<include name="init-build.properties"/>
+					<include name="build.properties"/>
+					<replacetoken>[COMMONS_PARAMETERS_CENTRAL_FILE_URL]</replacetoken>
+				</replace>
+				<replace
+					dir="."
+					value="/">
+					<include name="init-build.properties"/>
+					<include name="build.properties"/>
+					<replacetoken>\</replacetoken>
+				</replace>
+			</then>
+			<else>
+				<echo message="on ne change pas la valeur de commons.parameters.central.file.url dans init-build.properties ..." />
+			</else>
+		</if>
+	</target>
+	
+
+	
+	
+	
+	
+	
+	
+	
+	<target name="prepare">
+	  	<mkdir dir="build/ori-oai-nuxeo/target/classes/lib"/>
+	</target>
+
+	
+	
+	<target name="copy.src.build" depends="prepare">
+	    <copy todir="build/ori-oai-nuxeo" overwrite="yes">
+	      <fileset dir="."/>
+	    </copy>
+		<copy todir="build/ori-oai-nuxeo/target/classes/lib">
+			<fileset dir="src/main/resources/nuxeo.war/WEB-INF/lib"/>
+		</copy>
+	  </target>
+	
+	
+	
+	<target name="replace.token.config">
+
+	    <echo message="Update configuration files" />
+
+	    <replace dir="build/ori-oai-nuxeo/src" includes="**/*.xml">
+	     	<replacefilter token="@workflowWsUrl@" value="${workflow.ws.url}" />
+	    	<replacefilter token="@mdEditorFromUrl@" value="${mdEditor.from.url}" />
+	    	<replacefilter token="@mdEditorToUrl@" value="${mdEditor.to.url}" />
+	    	<replacefilter token="@nuxeoUrl@" value="${nuxeo.url}" />
+	     </replace>
+	 </target>
+	     	
+	     	
+	<!-- ==================== deploy Target =================================== -->
+  <target name="deploy" depends="clean-target,copy.src.build,replace.token.config" description="Build and copy to JBoss">
+	<if>
+		<equals arg1="${tomcat.dir}" arg2="[PATH_TOMCAT_NUXEO]" />
+		<then>
+			<property name="deploy.dir" value="${deploy.dir.jboss}" />
+			<property name="deploy.lib" value="" />
+		</then>
+		<else>
+			<property name="deploy.dir" value="${deploy.dir.tomcat}" />
+			<property name="deployed.dir" value="${deployed.dir.tomcat}" />
+			<property name="deploy.lib" value="${deploy.lib.tomcat}" />
+		</else>
+	</if>
+	
+	<echo message="Deploy to ${deploy.dir}" /> 
+  	
+  	<subant target="install" buildpath="build/ori-oai-nuxeo"/>
+  	<antcall target="copy"></antcall>
+  </target>
+
+
+	<target name="all" depends="deploy" description="Clean, build and copy to JBoss">
+	</target>
+	
+	
+	<property name="maven.version" value="2.2.1" />
+	<property name="maven.bin" value="${utils.dir}/apache-maven-${maven.version}/bin" />
+
+	<!-- ==================== depends-maven Target =================================== -->
+		<target name="install" description="Build">
+		<artifact:mvn pom="${basedir}/pom.xml" mavenHome="${maven.dir}" fork="true">
+				<arg value="install"/>
+				
+				<arg value="-Dmaven.test.skip=true"/>
+			</artifact:mvn>
+	</target>
+
+  <target name="copy" description="Copy files to JBoss">
+  	<!-- delete old versions of the project -->
+  	<delete>
+      <fileset file="${deploy.dir}/${name}-*.jar" />
+    </delete>
+  	
+	<if>
+		<not><equals arg1="${deployed.dir}" arg2="" /></not>
+		<then>
+			<delete>
+		      <fileset file="${deployed.dir}/${name}-*.jar" />
+		    </delete>
+		</then>
+	</if>
+  	
+    <copy todir="${deploy.dir}/" overwrite="true">
+      <fileset dir="${build.dir}" casesensitive="yes">
+        <include name="${name}-*.jar" />
+        <exclude name="${name}-*-sources.jar" />
+      </fileset>
+    </copy>
+  	
+	<if>
+		<not><equals arg1="${deploy.lib}" arg2="" /></not>
+		<then>
+			<copy todir="${deploy.lib}/" overwrite="true">
+		      <fileset dir="${build.dir}/classes/lib" casesensitive="yes">
+		        <include name="*.jar" />
+		      </fileset>
+		    </copy>
+		</then>
+	</if>
+  	
+    <!-- Could copy other files to .../config too -->
+  </target>
+
+
+  <target name="clean-target" description="clean target">
+    <delete  dir="target"/>
+  	<delete  dir="build"/>
+  </target>	
+	
+</project>

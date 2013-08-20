@@ -1,0 +1,25 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:t="http://myfaces.apache.org/tomahawk"
+  xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:nxd="http://nuxeo.org/nxweb/document"
+  xmlns:nxh="http://nuxeo.org/nxweb/html">
+
+
+	<h3><h:outputText value="#{messages['oriref.action.title']}" /></h3>
+
+	
+	<c:choose>
+		<c:when test="#{oriManager.callEditor}">
+			<ui:include src="/incl/ori_md_editor_view.xhtml" />
+		</c:when>
+		<c:otherwise>
+			<ui:include src="/incl/ori_action_view.xhtml" />
+		</c:otherwise>
+	</c:choose>
+	
+    
+</div>

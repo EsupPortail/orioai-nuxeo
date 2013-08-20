@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<component name="org.orioai.esupecm.workflow.actions">
+
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
+
+    <action id="TAB_ORI"
+      link="/incl/tabs/ori_view.xhtml" enabled="true"
+      label="oriref.action.reference" icon="/icons/file.gif" order="55">
+      <category>VIEW_ACTION_LIST</category>
+      <filter-id>edit</filter-id>
+      <filter-id>mutable_document</filter-id>
+      <filter-id>not_folder</filter-id>
+      <filter id="ori_in_section_filter">
+        <rule grant="false">
+          <type>SectionRoot</type>
+          <type>Section</type>	
+          <!--condition>#{oriCustomFiltersBean.inSection}</condition -->
+        </rule>
+      </filter>  
+    </action>
+
+
+
+    <!--action id="tab_md_editor"
+      link="/incl/tabs/ori_md_editorview.xhtml" enabled="true"
+      label="md yohan" icon="/icons/file.gif" order="55">
+      <category>VIEW_ACTION_LIST</category>
+      <filter id="ori_file_filter">
+        <rule grant="true">
+          <type>File</type>
+        </rule>
+      </filter>
+    </action-->
+
+    
+    
+    <action id="INIT_ORIWORKFLOW" link="#{oriManager.initOriWorkflow}"
+      enabled="true" label="ori.command.workflow.init" icon="">
+      <category>INIT_ORIWORKFLOW</category>
+      <!-- filter-id>edit</filter-id>  -->
+    </action>
+    
+    
+    
+    
+  </extension>
+
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="filters">
+  	<filter id="lock_published_document">
+      <rule grant="true">
+          <condition>#{oriManager.canUnpublish}</condition>
+        </rule>
+    </filter>
+  
+  </extension>
+</component>

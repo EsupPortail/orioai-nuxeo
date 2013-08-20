@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<component name="org.orioai.esupecm.workflow.service.OriOaiWorkflowService">
+
+  <implementation class="org.orioai.esupecm.workflow.service.OriOaiWorkflowServiceImpl" />
+
+  <service>
+    <provide interface="org.orioai.esupecm.workflow.service.OriOaiWorkflowService" />
+  </service>
+
+  <extension-point name="wsUrl">
+    <object class="org.orioai.esupecm.workflow.WsDescriptor" />
+  </extension-point>
+
+</component>

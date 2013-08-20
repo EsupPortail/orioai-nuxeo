@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<component name="org.orioai.esupecm.workflow.wsdlOriOaiWorkflow">
+
+  <extension target="org.orioai.esupecm.workflow.service.OriOaiWorkflowService" point="wsUrl">
+
+    <configuration>
+      <wsUrl>@workflowWsUrl@</wsUrl>
+      <mdEditorFromUrl>@mdEditorFromUrl@</mdEditorFromUrl>
+      <mdEditorToUrl>@mdEditorToUrl@</mdEditorToUrl>
+    </configuration>
+
+  </extension>
+
+</component>

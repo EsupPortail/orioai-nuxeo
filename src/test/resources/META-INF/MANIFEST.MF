@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 1
+Bundle-Name: ORI-OAI Nuxeo project
+Bundle-SymbolicName: org.orioai.nuxeo.workflow.tests;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: ORI-OAI
+Provide-Package: org.orioai.nuxeo.workflow.tests
+

@@ -1,0 +1,60 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:t="http://myfaces.apache.org/tomahawk"
+  xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:nxd="http://nuxeo.org/nxweb/document"
+  xmlns:nxh="http://nuxeo.org/nxweb/html">
+
+  
+	
+	<h:panelGroup>
+		
+		<!-- the link to open manually -->
+		<h:outputText value="#{messages['oriref.label.popup']}"/>
+		
+		<nxu:dataList	rendered="#{oriManager.currentMdEditorUrls != null}"
+					layout="orderedList"
+					var="mdUrl"
+					value="#{oriManager.currentMdEditorUrls}"
+					rowIndexVar="rowUrlindex"
+					rowCountVar="rowCountUrl">
+			
+			<!-- the pop-up -->
+			<script type="text/javascript">
+				<h:outputText
+					value="url='#{mdUrl.url}/#{oriManager.currentMdEditorIdp}';window.open(url,'XMLEdit','left=100,top=50,width=900,height=800,scrollbars=yes,resizable=yes');" />
+			</script>
+			
+			<!-- the link -->
+			<h:outputText value="#{mdUrl.title}: "/>
+			<h:outputLink title="#{mdUrl.title}" value="#{mdUrl.url}/#{oriManager.currentMdEditorIdp}" target="XMLEdit">
+				<h:outputText value="#{mdUrl.url}/#{oriManager.currentMdEditorIdp}"/>
+			</h:outputLink>
+		</nxu:dataList>
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- the back button -->
+		<div id="back_oriwf_button">
+			<h:form id="edit-md" enctype="application/x-www-form-urlencoded" target="">
+				<nxh:commandButton
+					id="submit"
+					styleClass="button" type="submit"
+					action="#{oriManager.backFromEditor()}"
+					value="#{messages['oriref.action.editor.back']}"/>
+			</h:form>
+		</div>
+		
+	</h:panelGroup>
+
+    
+</div>
+

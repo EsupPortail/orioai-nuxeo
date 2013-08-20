@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<component name="org.orioai.esupecm.nuxeo2xml.service.OriOaiNuxeo2XmlService">
+
+  <implementation class="org.orioai.esupecm.nuxeo2xml.service.OriOaiNuxeo2XmlServiceImpl" />
+
+  <service>
+    <provide interface="org.orioai.esupecm.nuxeo2xml.service.OriOaiNuxeo2XmlService" />
+  </service>
+
+  <extension-point name="nuxeoToxml">
+    <object class="org.orioai.esupecm.nuxeo2xml.Nuxeo2XmlDescriptor" />
+  </extension-point>
+
+  <extension-point name="nuxeoDocumentUrl">
+    <object class="org.orioai.esupecm.nuxeo2xml.NuxeoDocumentUrlDescriptor" />
+  </extension-point>
+
+</component>

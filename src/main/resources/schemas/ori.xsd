@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://nuxeo.ori-oai.org/schemas/ori"
+  xmlns:nxs="http://nuxeo.ori-oai.org/schemas/ori">
+
+  <!--xs:element name="oriId" type="xs:string"/-->
+  
+  
+  <xs:simpleType name="stringList">
+    <xs:list itemType="xs:string" />
+  </xs:simpleType>
+  
+  <xs:element name="oriId" type="nxs:stringList"/>
+  
+  
+  
+</xs:schema>

@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 1
+Bundle-Name: ORI-OAI Esup-ECM project
+Bundle-SymbolicName: org.orioai.nuxeo.workflow;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: ORI-OAI
+Provide-Package: org.orioai.nuxeo.workflow
+Require-Bundle:  org.nuxeo.runtime,
+ org.nuxeo.ecm.core.api,
+ org.nuxeo.ecm.core,
+ org.nuxeo.ecm.webapp.core,
+ org.nuxeo.ecm.relations,
+ org.nuxeo.ecm.relations.api,
+ org.nuxeo.ecm.relations.web
+Nuxeo-RequiredBy: org.nuxeo.ecm.war
+Nuxeo-Component: OSGI-INF/ori-core-types-contrib.xml,
+ OSGI-INF/ori-actions-contrib.xml,
+ OSGI-INF/orioaiworkflow-service.xml,
+ OSGI-INF/wsdl-orioaiworkflow-contrib.xml,
+ OSGI-INF/orioainuxeo2xml-service.xml,
+ OSGI-INF/orioainuxeo2xml-contrib.xml

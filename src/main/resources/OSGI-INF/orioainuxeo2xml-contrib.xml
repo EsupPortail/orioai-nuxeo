@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<component name="org.orioai.esupecm.workflow.Nuxeo2XmlService">
+  
+  
+  
+  <extension target="org.orioai.esupecm.nuxeo2xml.service.OriOaiNuxeo2XmlService"
+    point="nuxeoDocumentUrl">
+
+    <configuration>
+      <documentUrl>@nuxeoUrl@/site/esupversions/</documentUrl>
+    </configuration>
+
+  </extension>
+  
+  
+  
+  <!-- dublin core -->
+  <extension target="org.orioai.esupecm.nuxeo2xml.service.OriOaiNuxeo2XmlService"
+    point="nuxeoToxml">
+
+    <configuration>
+      <metadataSchemaNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataSchemaNamespace>
+      
+      <ns prefix="dc" namespace="http://purl.org/dc/elements/1.1/"/>
+      <ns prefix="oaidc" namespace="http://www.openarchives.org/OAI/2.0/oai_dc/"/>
+      
+      <metadata type="NUXEO" fromXpath="NUXEO_URL" workflowXpath="/oaidc:dc/dc:identifier"/>
+      <metadata type="NUXEO" fromXpath="/document/schema/nx_dc:title" workflowXpath="/oaidc:dc/dc:title"/>
+      <metadata type="NUXEO" fromXpath="substring(/document/schema/nx_dc:created, 0, 11)" workflowXpath="/oaidc:dc/dc:date"/>
+      <metadata type="NUXEO" fromXpath="/document/nx_file:schema/nx_file:content/nx_file:mime-type" workflowXpath="/oaidc:dc/dc:format"/>
+      <metadata type="NUXEO" fromXpath="/document/nx_picture:schema/nx_picture:views/item/content/mime-type" workflowXpath="/oaidc:dc/dc:format"/>
+    </configuration>
+
+  </extension>
+
+
+  <!-- LOM -->
+  <extension target="org.orioai.esupecm.nuxeo2xml.service.OriOaiNuxeo2XmlService"
+    point="nuxeoToxml">
+
+    <configuration>
+      <metadataSchemaNamespace>http://ltsc.ieee.org/xsd/LOM</metadataSchemaNamespace>
+      
+      <ns prefix="lom" namespace="http://ltsc.ieee.org/xsd/LOM"/>
+      <ns prefix="lomfr" namespace="http://www.lom-fr.fr/xsd/LOMFR"/>
+      
+      
+      <embeddedMetadataFilePath>metadata/lom.xml</embeddedMetadataFilePath>
+      
+      <metadata type="FILE" fromXpath="/lom:lom/lom:general/lom:title/lom:string[starts-with(@language,'fr')]" workflowXpathRoot="/lom:lom/lom:general" workflowXpath="/lom:lom/lom:general/lom:title/lom:string[@language='fre']"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:general/lom:description/lom:string[starts-with(@language,'fr')]" workflowXpathRoot="/lom:lom/lom:general" workflowXpath="/lom:lom/lom:general/lom:description/lom:string[@language='fre']"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:general/lom:keyword/lom:string[starts-with(@language,'fr')]" workflowXpathRoot="/lom:lom/lom:general" workflowXpath="/lom:lom/lom:general/lom:keyword/lom:string[@language='fre']"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:general/lom:coverage/lom:string[starts-with(@language,'fr')]" workflowXpathRoot="/lom:lom/lom:general" workflowXpath="/lom:lom/lom:general/lom:coverage/lom:string[@language='fre']"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:general/lom:structure[lom:source='LOMv1.0']/lom:value" workflowXpathRoot="/lom:lom/lom:general" workflowXpath="/lom:lom/lom:general/lom:structure[lom:source='LOMv1.0']/lom:value"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:general/lom:aggregationLevel[lom:source='LOMv1.0']/lom:value" workflowXpathRoot="/lom:lom/lom:general" workflowXpath="/lom:lom/lom:general/lom:aggregationLevel[lom:source='LOMv1.0']/lom:value"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:general/lomfr:documentType[lomfr:source='LOMFRv1.0']/lomfr:value" workflowXpathRoot="/lom:lom/lom:general" workflowXpath="/lom:lom/lom:general/lomfr:documentType[lomfr:source='LOMFRv1.0']/lomfr:value"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:lifeCycle/lom:contribute[lom:role/lom:value='author']/lom:entity" workflowXpathRoot="/lom:lom/lom:lifeCycle" workflowXpath="/lom:lom/lom:lifeCycle/lom:contribute[lom:role/lom:value='author']/lom:entity" CDATA="true"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:lifeCycle/lom:contribute[lom:role/lom:value='author']/lom:date/lom:dateTime" workflowXpathRoot="/lom:lom/lom:lifeCycle" workflowXpath="/lom:lom/lom:lifeCycle/lom:contribute[lom:role/lom:value='author']/lom:date/lom:dateTime"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:lifeCycle/lom:contribute[lom:role/lom:value='publisher']/lom:entity" workflowXpathRoot="/lom:lom/lom:lifeCycle" workflowXpath="/lom:lom/lom:lifeCycle/lom:contribute[lom:role/lom:value='publisher']/lom:entity" CDATA="true"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:lifeCycle/lom:contribute[lom:role/lom:value='publisher']/lom:date/lom:dateTime" workflowXpathRoot="/lom:lom/lom:lifeCycle" workflowXpath="/lom:lom/lom:lifeCycle/lom:contribute[lom:role/lom:value='publisher']/lom:date/lom:dateTime"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:educational/lom:context[lom:source='LOMv1.0']/lom:value" workflowXpathRoot="/lom:lom/lom:educational" workflowXpath="/lom:lom/lom:educational/lom:context[lom:source='LOMv1.0']/lom:value"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:educational/lom:context[lom:source='LOMFRv1.0']/lom:value" workflowXpathRoot="/lom:lom/lom:educational" workflowXpath="/lom:lom/lom:educational/lom:context[lom:source='LOMFRv1.0']/lom:value"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:rights/lom:copyrightAndOtherRestrictions[lom:source='LOMv1.0']/lom:value" workflowXpathRoot="/lom:lom/lom:rights" workflowXpath="/lom:lom/lom:rights/lom:copyrightAndOtherRestrictions[lom:source='LOMv1.0']/lom:value"/>
+      <metadata type="FILE" fromXpath="/lom:lom/lom:rights/lom:description/lom:string[starts-with(@language,'fr')]" workflowXpathRoot="/lom:lom/lom:rights" workflowXpath="/lom:lom/lom:rights/lom:description/lom:string[@language='fre']"/>
+
+      
+      
+      
+      
+      <metadata type="NUXEO" fromXpath="NUXEO_URL" workflowXpath="/lom:lom/lom:technical/lom:location"/>
+      <metadata type="NUXEO" fromXpath="/document/schema/nx_dc:title" workflowXpath="/lom:lom/lom:general/lom:title/lom:string[@language='fre']" condition="empty"/>
+      <metadata type="NUXEO" fromXpath="substring(/document/schema/nx_dc:created, 0, 11)" workflowXpath="/lom:lom/lom:lifeCycle/lom:contribute[lom:role/lom:value='author']/lom:date/lom:dateTime"/>
+      <metadata type="NUXEO" fromXpath="/document/nx_file:schema/nx_file:content/nx_file:mime-type" workflowXpath="/lom:lom/lom:technical/lom:format" condition="empty"/>
+      <metadata type="NUXEO" fromXpath="/document/nx_picture:schema/nx_picture:views/item/content/mime-type" workflowXpath="/lom:lom/lom:technical/lom:format" condition="empty"/>
+      
+      
+      <metadata type="NUXEO" fromXpath="/document/nx_common:schema/nx_common:size" workflowXpath="/lom:lom/lom:technical/lom:size"/>
+      <metadata type="NUXEO" fromXpath="concat(/document/nx_uid:schema/nx_uid:major_version,'.',/document/nx_uid:schema/nx_uid:minor_version)" workflowXpath="/lom:lom/lom:lifeCycle/lom:version/lom:string"/>
+      
+    </configuration>
+
+  </extension>
+  
+  
+    <!-- TEF -->
+  <extension target="org.orioai.esupecm.nuxeo2xml.service.OriOaiNuxeo2XmlService"
+    point="nuxeoToxml">
+
+    <configuration>
+      <metadataSchemaNamespace>http://www.abes.fr/abes/documents/tef</metadataSchemaNamespace>
+      
+      <ns prefix="tef" namespace="http://www.abes.fr/abes/documents/tef"/>
+      <ns prefix="dcterms" namespace="http://purl.org/dc/terms/"/>
+      <ns prefix="dc" namespace="http://purl.org/dc/elements/1.1/"/>
+      <ns prefix="mets" namespace="http://www.loc.gov/METS/"/>
+      <ns prefix="xsi" namespace="http://www.w3.org/2001/XMLSchema-instance"/>
+      <ns prefix="xlink" namespace="http://www.w3.org/1999/xlink"/>
+      
+      <metadata type="NUXEO" fromXpath="NUXEO_URL" workflowXpath="/mets:mets/mets:dmdSec[@ID='desc_edition']/mets:mdWrap/mets:xmlData/tef:edition/dc:identifier[@xsi:type='dcterms:URI']"/>
+      <metadata type="NUXEO" fromXpath="NUXEO_URL" workflowXpath="/mets:mets/mets:fileSec/mets:fileGrp[@USE='archive']/mets:file/mets:FLocat[@LOCTYPE='URL']/@xlink:href"/>
+      
+      <metadata type="NUXEO" fromXpath="/document/nx_file:schema/nx_file:content/nx_file:mime-type" workflowXpath="/mets:mets/mets:dmdSec[@ID='desc_edition']/mets:mdWrap/mets:xmlData/tef:edition/dcterms:medium[@xsi:type='dcterms:IMT']"/>
+      <metadata type="NUXEO" fromXpath="/document/nx_picture:schema/nx_picture:views/item/content/mime-type" workflowXpath="/mets:mets/mets:dmdSec[@ID='desc_edition']/mets:mdWrap/mets:xmlData/tef:edition/dcterms:medium[@xsi:type='dcterms:IMT']"/>
+      
+      <metadata type="NUXEO" fromXpath="concat('1 : ',/document/nx_common:schema/nx_common:size,' octets')" workflowXpath="/mets:mets/mets:dmdSec[@ID='desc_edition']/mets:mdWrap/mets:xmlData/tef:edition/dcterms:extent"/>
+      
+      <metadata type="NUXEO" fromXpath="/document/nx_file:schema/nx_file:content/nx_file:mime-type" workflowXpath="/mets:mets/mets:fileSec/mets:fileGrp[@USE='archive']/mets:file/@MIMETYPE"/>
+      <metadata type="NUXEO" fromXpath="/document/nx_picture:schema/nx_picture:views/item/content/mime-type" workflowXpath="/mets:mets/mets:fileSec/mets:fileGrp[@USE='archive']/mets:file/@MIMETYPE"/>
+      
+      <metadata type="NUXEO" fromXpath="/document/nx_file:schema/nx_file:content/nx_file:mime-type" workflowXpath="/mets:mets/mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/tef:meta_fichier/tef:formatFichier">
+      	<translation from="application/vnd.oasis.opendocument.text" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.spreadsheet" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.presentation" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.graphics" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.chart" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.formula" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.database" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.image" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.text-master" to="OpenDocument"/>
+      	<translation from="application/pdf" to="PDF"/>
+      	<translation from="text/html" to="HTML"/>
+      	<translation from="text/rtf" to="RTF"/>
+      	<translation from="text/plain" to="TXT"/>
+      	<translation from="text/xml" to="XML"/>
+      	<translation from="image/jpeg" to="JPEG"/>
+      	<translation from="image/gif" to="GIF"/>
+      	<translation from="image/png" to="PNG"/>
+      	<translation from="image/tiff" to="TIFF"/>
+      	<translation from="audio/mpeg" to="MP3"/>
+      	<translation from="video/mpeg" to="MPEG"/>
+      	<translation from="video/quicktime" to="QuickTime"/>
+      	
+      	<!-- default -->
+      	<translation to="autreFormat"/>
+      </metadata>
+      
+      <metadata type="NUXEO" fromXpath="/document/nx_picture:schema/nx_picture:views/item/content/mime-type" workflowXpath="/mets:mets/mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/tef:meta_fichier/tef:formatFichier">
+      	<translation from="application/vnd.oasis.opendocument.text" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.spreadsheet" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.presentation" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.graphics" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.chart" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.formula" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.database" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.image" to="OpenDocument"/>
+      	<translation from="application/vnd.oasis.opendocument.text-master" to="OpenDocument"/>
+      	<translation from="application/pdf" to="PDF"/>
+      	<translation from="text/html" to="HTML"/>
+      	<translation from="text/rtf" to="RTF"/>
+      	<translation from="text/plain" to="TXT"/>
+      	<translation from="text/xml" to="XML"/>
+      	<translation from="image/jpeg" to="JPEG"/>
+      	<translation from="image/gif" to="GIF"/>
+      	<translation from="image/png" to="PNG"/>
+      	<translation from="image/tiff" to="TIFF"/>
+      	<translation from="audio/mpeg" to="MP3"/>
+      	<translation from="video/mpeg" to="MPEG"/>
+      	<translation from="video/quicktime" to="QuickTime"/>
+      	
+      	<!-- default -->
+      	<translation to="autreFormat"/>
+      </metadata>
+      
+      <metadata type="NUXEO" fromXpath="/document/nx_common:schema/nx_common:size" workflowXpath="/mets:mets/mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/tef:meta_fichier/tef:taille"/>
+      
+      <metadata type="STATIC" workflowXpath="/mets:mets/mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/tef:meta_fichier/tef:encodage">
+      	<translation to="ASCII"/>
+      </metadata>
+      
+      
+    </configuration>
+
+  </extension>
+
+  <!-- dc_plus_fr -->
+  <extension target="org.orioai.esupecm.nuxeo2xml.service.OriOaiNuxeo2XmlService"
+    point="nuxeoToxml">
+
+    <configuration>
+      <metadataSchemaNamespace>http://www.archives-ouvertes.fr/OAI/2.0/dc_plus_fr/</metadataSchemaNamespace>
+      
+      <ns prefix="dcfr" namespace="http://www.archives-ouvertes.fr/OAI/2.0/dc_plus_fr/"/>
+      <ns prefix="dc" namespace="http://purl.org/dc/elements/1.1/"/>
+      <ns prefix="oaidc" namespace="http://www.openarchives.org/OAI/2.0/oai_dc/"/>
+      <ns prefix="dcterms" namespace="http://purl.org/dc/terms/"/>
+      <ns prefix="xsi" namespace="http://www.w3.org/2001/XMLSchema-instance" />
+      
+      <metadata type="NUXEO" fromXpath="NUXEO_URL" workflowXpath="/dcfr:dc/dc:relation[@xsi:type = 'dcfr:file']"/>
+      <metadata type="NUXEO" fromXpath="/document/schema/nx_dc:title" workflowXpath="/dcfr:dc/dc:title[not(@xsi:type)]"/>
+      <metadata type="NUXEO" fromXpath="substring(/document/schema/nx_dc:created, 0, 11)" workflowXpath="/dcfr:dc/dcterms:dateSubmitted"/>
+      <metadata type="NUXEO" fromXpath="/document/nx_file:schema/nx_file:content/nx_file:mime-type" workflowXpath="/dcfr:dc/dc:format">
+      	<translation from="application/vnd.oasis.opendocument.text" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.spreadsheet" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.presentation" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.graphics" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.chart" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.formula" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.database" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.image" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.text-master" to="ODF"/>
+      	<translation from="application/pdf" to="PDF"/>
+      	<translation from="text/html" to="HTML"/>
+      	<translation from="text/rtf" to="RTF"/>
+      	<translation from="text/plain" to="TXT"/>
+      	<translation from="text/xml" to="XML"/>
+      	<translation from="image/jpeg" to="IMG"/>
+      	<translation from="image/gif" to="IMG"/>
+      	<translation from="image/png" to="IMG"/>
+      	<translation from="image/tiff" to="IMG"/>
+      	<translation from="video/mpeg" to="VIDEO"/>
+      	<translation from="video/quicktime" to="VIDEO"/>
+          
+      </metadata>
+      
+      <metadata type="NUXEO" fromXpath="/document/nx_picture:schema/nx_picture:views/item/content/mime-type" workflowXpath="/dcfr:dc/dc:format">
+      	<translation from="application/vnd.oasis.opendocument.text" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.spreadsheet" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.presentation" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.graphics" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.chart" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.formula" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.database" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.image" to="ODF"/>
+      	<translation from="application/vnd.oasis.opendocument.text-master" to="ODF"/>
+      	<translation from="application/pdf" to="PDF"/>
+      	<translation from="text/html" to="HTML"/>
+      	<translation from="text/rtf" to="RTF"/>
+      	<translation from="text/plain" to="TXT"/>
+      	<translation from="text/xml" to="XML"/>
+      	<translation from="image/jpeg" to="IMG"/>
+      	<translation from="image/gif" to="IMG"/>
+      	<translation from="image/png" to="IMG"/>
+      	<translation from="image/tiff" to="IMG"/>
+      	<translation from="video/mpeg" to="VIDEO"/>
+      	<translation from="video/quicktime" to="VIDEO"/>
+          
+      </metadata>
+    </configuration>
+
+  </extension>
+
+</component>

@@ -1,0 +1,203 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+	xmlns:nxd="http://nuxeo.org/nxweb/document"
+	xmlns:nxh="http://nuxeo.org/nxweb/html"
+	xmlns:nxu="http://nuxeo.org/nxweb/util"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk" class="menu">
+	
+<nxu:methodResult value="#{oriManager.getVersionsReferencedModel()}" name="refversions" immediate="true">
+
+	
+	<h:panelGroup id="help_empty" rendered="${empty refversions}">
+		<h:graphicImage value="/img/warning.gif" />
+		<h:outputText value=" #{messages['oriref.status.noversions.available']}" />
+		<br/>
+		<h:graphicImage value="/icons/ori-oai_question.png" />
+		Afin de r&#233;f&#233;rencer votre document :<br/>
+		<ul>
+		<li>vous devez disposer d'une version archiv&#233;e de ce document (voir l'onglet Versions)</li>
+		<li>il est aussi recommand&#233; d'avoir demand&#233; la publication de ce document dans une des sections auxquelles vous avez acc&#232;s (voir l'onglet Publication)</li>
+		</ul>
+		Vous pourrez alors effectuer le r&#233;f&#233;rencement en cliquant sur un des types de description propos&#233;s (pensez &#224; autoriser les pop-up dans votre navigateur).<br/>
+		Pour plus de d&#233;tails sur le processus de r&#233;f&#233;rencement, veuillez consulter la <a href="http://www.ori-oai.org/display/ORIOAInuxeo/Utilisation" target="_blank">documentation utilisateur</a>.<br/>
+	</h:panelGroup>
+	<h:panelGroup id="help" rendered="${not empty refversions}">
+		<h:graphicImage value="/icons/ori-oai_question.png" />
+		Afin de r&#233;f&#233;rencer votre document, il est recommand&#233; d'en demander la publication dans une des sections auxquelles vous avez acc&#232;s (voir l'onglet Publication).
+		Vous pouvez effectuer le r&#233;f&#233;rencement en cliquant sur un des types de description propos&#233;s (pensez &#224; autoriser les pop-up dans votre navigateur).<br/>
+		Pour plus de d&#233;tails sur le processus de r&#233;f&#233;rencement, veuillez consulter la <a href="http://www.ori-oai.org/display/ORIOAInuxeo/Utilisation" target="_blank">documentation utilisateur</a>.<br/>
+	</h:panelGroup>
+	<br/><br/>
+
+						  
+	<nxu:dataList id="versionList" var="versionRefItem"
+		rowIndexVar="versionIndex" value="${refversions}" layout="none">
+
+		<div class="foldableBox">
+
+		<h3 class="unfolded"><a href="#nogo"
+			onclick="return toggleBox(this)"><h:outputText
+			value="Version #{versionRefItem.versionLabel}" /> </a></h3>
+
+		<div class="boxBody">
+
+				<nxu:methodResult
+				      value="#{oriManager.getReferencableMetadataTypesMap(versionRefItem.versionDoc)}" name="availableMetaTypes">
+				    
+					<h:panelGroup id="metadataSelection" rendered="#{!empty availableMetaTypes}">
+
+								
+									<nxu:dataList var="metadataType"
+												  value="${availableMetaTypes.keySet()}" layout="none">
+									
+										<h:form id="initform">
+											<h:graphicImage value="/icons/back.png" />
+											<nxh:commandLink styleClass="button" type="submit"
+												action="#{oriManager.initOriWorkflow(versionRefItem.versionDoc, availableMetaTypes.get(metadataType), 'true')}"
+												value="#{messages['oriref.action.select.metadataType']} &#34;#{metadataType}&#34;"
+											>
+												<f:param name="callEditor" value="'true'" />
+											</nxh:commandLink>
+										</h:form>
+									
+										
+									</nxu:dataList>
+										
+								
+	
+
+					</h:panelGroup>
+
+				</nxu:methodResult>
+
+		<h:panelGroup id="referencingInfoList">
+
+			<p><h:outputText
+				rendered="${empty empty versionRefItem.oriInfos}"
+				value="#{messages['oriref.status.no.publication']}" /></p>
+
+			<h:panelGroup rendered="#{!empty versionRefItem.oriInfos}">
+
+				<nxu:dataTable var="oriinfo" value="#{versionRefItem.oriInfos}"
+					preserveSort="true" preserveDataModel="false"
+					rowClasses="dataRowEven,dataRowOdd" sortable="false"
+					styleClass="dataList" rowIndexVar="oriIndex">
+
+					<!-- metadata type -->
+					<nxu:column>
+						<f:facet name="header">
+							<h:outputText value="#{messages['oriref.label.referencedin']}" />
+						</f:facet>
+						<h:outputText value="#{oriinfo.metadataType.label}" />
+					</nxu:column>
+
+					<!-- id -->
+					<nxu:column rendered="false">
+						<f:facet name="header">
+							<h:outputText value="#{messages['oriref.label.oriId']}" />
+						</f:facet>
+						<h:outputText value="#{oriinfo.oriId}" />
+					</nxu:column>
+
+					<!-- states -->
+					<nxu:column>
+						<f:facet name="header">
+							<h:outputText value="#{messages['oriref.label.oristates']}" />
+						</f:facet>
+						<ui:repeat value="#{oriinfo.states}" var="state">
+							<div><h:outputText value="#{state}" /></div>
+						</ui:repeat>
+					</nxu:column>
+
+					<!-- actions -->
+					<nxu:column>
+						<f:facet name="header">
+							<h:outputText value="#{messages['oriref.label.actions']}" />
+						</f:facet>
+						<nxu:dataList layout="none" var="oriAction"
+							value="#{oriinfo.actions}" rendered="#{oriinfo.actions != null}"
+							rowIndexVar="rowActionIndex" rowCountVar="rowCountActions">
+							
+							
+							
+							<h:form id="actionform">
+								<nxh:commandLink
+									styleClass="button" type="submit"
+									action="#{oriManager.processWorkflowAction(versionRefItem.versionDoc)}"
+									value="#{oriAction.name}"
+								>
+									<f:param name="actionNameParam" value="#{oriAction.name}" />
+									<f:param name="actionIdParam" value="#{oriAction.id}" />
+									<f:param name="oriIdpParam" value="#{oriinfo.idp}" />
+									<f:param name="oriIdParam" value="#{oriinfo.oriId}" />
+								</nxh:commandLink>
+								
+								
+							</h:form>
+							
+							
+							
+						</nxu:dataList>
+						<h:outputText
+							rendered="#{oriinfo.actions == null or empty oriinfo.actions}"
+							value="#{messages['oriref.status.noactions.available']}" />
+					</nxu:column>
+					
+					<!-- informations -->
+					<nxu:column>
+						<f:facet name="header">
+							<h:outputText value="#{messages['oriref.label.informations']}" />
+						</f:facet>
+						<ui:repeat value="#{oriinfo.informations}" var="information">
+							<div><h:graphicImage value="/img/warning.gif" /><h:outputText value=" #{information}" /></div>
+						</ui:repeat>
+					</nxu:column>
+					
+					<!-- edit -->
+					<nxu:column>
+						<f:facet name="header">
+							<h:outputText value="#{messages['oriref.label.editors']}" />
+						</f:facet>
+						<nxu:dataList rendered="#{oriinfo.mdeditorUrls != null}"
+							layout="none" var="mdUrl" value="#{oriinfo.mdeditorUrls}"
+							rowIndexVar="rowUrlindex" rowCountVar="rowCountUrl">
+
+							<h:form id="editorform">
+								<nxh:commandLink
+									styleClass="button" type="submit"
+									action="#{oriManager.processCallEditor(oriinfo.idp, oriinfo.oriId, versionRefItem.versionDoc, mdUrl)}"
+									value="#{mdUrl.title}"/>
+							</h:form>
+							
+						</nxu:dataList>
+						<h:outputText rendered="#{oriinfo.mdeditorUrls == null}"
+							value="#{messages['oriref.status.nomdeditorurls.available']}" />
+					</nxu:column>
+
+
+
+				</nxu:dataTable>
+				<!-- end nxu:dataTable var="oriinfo" -->
+
+
+			</h:panelGroup>
+
+		</h:panelGroup></div>
+		<!-- end class="boxBody" --></div>
+		<!-- end class="foldableBox" -->
+
+	</nxu:dataList>
+	<!-- end tdlist id="versionList" -->
+	
+	
+
+							
+
+</nxu:methodResult></div>
+
+
+
