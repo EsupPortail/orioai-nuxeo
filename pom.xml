@@ -12,7 +12,7 @@
 
 	<groupId>org.orioai</groupId>
 	<artifactId>esupecm-orioai</artifactId>
-	<version>1.7.3-SNAPSHOT</version>
+	<version>1.7.3</version>
 	<name>ORI-OAI-nuxeo project</name>
 	<description>ORI-OAI-nuxeo project</description>
 
