@@ -245,7 +245,7 @@
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <tagNameFormat>@{project.version}</tagNameFormat>
-                    <goals />
+                    <goals>deploy</goals>
                 </configuration>
             </plugin> 
 		</plugins>
