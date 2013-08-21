@@ -456,7 +456,7 @@ public class CustomRelationActions extends DocumentContextBoundActionBean
             // make sure statements will be recomputed
             resetStatements();
 
-            // commenté pour ne pas affiché Relation créée qui ne parle pas à l'utilisateur
+            // commentÃ© pour ne pas affichÃ© Relation crÃ©Ã©e qui ne parle pas Ã  l'utilisateur
             //facesMessages.add(FacesMessage.SEVERITY_INFO, resourcesAccessor.getMessages().get("label.relation.created"));
             resetCreateFormValues();
         } else {
