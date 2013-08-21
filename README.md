@@ -5,6 +5,9 @@ ori-oai plugin for nuxeo
 
 ## Utilisation
 
+Télécharger le jar :
+*  <version>/esupecm-orioai-<version>.jar sous https://mvn.esup-portail.org/content/repositories/releases/org/orioai/esupecm-orioai
+
 Dans un template nuxeo :
 *  Placer le jar dans le répertoire plugins
 *  Placer un fichier de configuration (Cf. di-dessous) dans le répertoire config
