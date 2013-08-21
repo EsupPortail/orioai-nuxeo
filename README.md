@@ -24,16 +24,14 @@ Dans un template nuxeo :
 	
 		<!-- extension point to configure -->
 		<extension target="org.orioai.esupecm.workflow.service.OriOaiWorkflowService" point="wsUrl">
-	
-		<configuration>
-			<!-- workflow web service URL -->
-			<wsUrl>http://orisrv.domain.my:8888/workflow/xfire/OriWorkflowService</wsUrl>
-			<!-- mdEditor.from.url -->
-			<mdEditorFromUrl>https://orisrv.domain.my/md-editor</mdEditorFromUrl>
-			<!-- mdEditor.to.url -->
-			<mdEditorToUrl>https://nuxeosrv.univ-rennes1.fr/md-editor</mdEditorToUrl>
-		</configuration>
-	
+			<configuration>
+				<!-- workflow web service URL -->
+				<wsUrl>http://orisrv.domain.my:8888/workflow/xfire/OriWorkflowService</wsUrl>
+				<!-- mdEditor.from.url -->
+				<mdEditorFromUrl>https://orisrv.domain.my/md-editor</mdEditorFromUrl>
+				<!-- mdEditor.to.url -->
+				<mdEditorToUrl>https://nuxeosrv.univ-rennes1.fr/md-editor</mdEditorToUrl>
+			</configuration>
 		</extension>
 	
 	</component>
